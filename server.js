@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { RandomForestClassifier } = require('ml-random-forest');
+const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
