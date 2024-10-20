@@ -4,6 +4,7 @@ const { RandomForestClassifier } = require('ml-random-forest');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 // Expanded dummy training data (temperature, humidity, rain_yes or rain_no)
 const trainingData = [
