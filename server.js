@@ -59,7 +59,7 @@ app.post('/predict', (req, res) => {
     const prediction = model.predict([[temperature, humidity]])[0];
 
     // Return the prediction result
-    res.send(prediction === 1 ? "rain_yes" : "rain_no");
+    res.send(prediction === 1 ? "rain" : "no_Rain");
   } catch (error) {
     console.error('Prediction error:', error);
     res.status(500).send('Error during prediction');
