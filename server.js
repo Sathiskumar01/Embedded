@@ -43,20 +43,26 @@ const outputs = trainingData.map(d => d.rain);
 const model = new RandomForestClassifier();
 model.train(inputs, outputs);
 
-// Define a route to handle predictions from Arduino
+// Define a route to handle predictions from Arduino or Postman
 app.post('/predict', (req, res) => {
   const { temperature, humidity } = req.body;
 
+  // Validate if temperature and humidity are present and are numbers
+  if (typeof temperature !== 'number' || typeof humidity !== 'number') {
+    return res.status(400).send('Invalid input: Temperature and humidity must be numeric.');
+  }
+
   console.log(`Received data - Temperature: ${temperature}, Humidity: ${humidity}`);
 
-  // Predict rain (1 for rain, 0 for no rain) based on the input data
-  const prediction = model.predict([[temperature, humidity]])[0];
+  try {
+    // Predict rain (1 for rain, 0 for no rain) based on the input data
+    const prediction = model.predict([[temperature, humidity]])[0];
 
-  // Return the prediction result
-  if (prediction === 1) {
-    res.send("rain_yes");
-  } else {
-    res.send("rain_no");
+    // Return the prediction result
+    res.send(prediction === 1 ? "rain_yes" : "rain_no");
+  } catch (error) {
+    console.error('Prediction error:', error);
+    res.status(500).send('Error during prediction');
   }
 });
 
